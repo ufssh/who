@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kailash | Shunya</title>
+    <title>Kailash</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;900&family=Montserrat:wght@800&family=Inter:wght@100;900&family=Noto+Serif+Devanagari:wght@700&family=Space+Mono&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;900&family=Montserrat:wght@800&family=Playfair+Display:ital,wght@0,900;1,900&family=Inter:wght@100;900&family=Noto+Serif+Devanagari:wght@700&family=Space+Mono&family=Fraunces:ital,wght@1,900&family=Cormorant+Garamond:wght@700&family=Cinzel:wght@700&family=Outfit:wght@100;900&display=swap" rel="stylesheet">
 
     <style>
         :root {
@@ -21,7 +21,7 @@
             overflow: hidden;
             background-color: var(--bg);
             color: var(--text);
-            transition: background 0.8s ease;
+            transition: background 1.2s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         #canvas-container {
@@ -44,20 +44,20 @@
 
         h2 {
             font-family: var(--font-main);
-            font-size: clamp(4rem, 15vw, 10rem);
+            font-size: clamp(3rem, 12vw, 8rem);
             font-weight: 900;
             margin: 0;
-            letter-spacing: -0.05em;
-            text-transform: uppercase;
-            line-height: 0.8;
+            letter-spacing: -0.02em;
+            /* text-transform: uppercase; REMOVED to allow custom casing */
+            line-height: 0.9;
         }
 
         .quote-block {
             margin-top: 20px;
-            padding: 0 10%;
+            padding: 0 12%;
             opacity: 0;
-            transform: translateY(20px);
-            transition: 1s all ease;
+            transform: translateY(30px);
+            transition: 1.5s all cubic-bezier(0.2, 1, 0.3, 1);
         }
 
         .quote-block.active {
@@ -67,62 +67,63 @@
 
         h3 {
             font-family: 'Noto Serif Devanagari', serif;
-            font-size: clamp(1.1rem, 2.2vw, 1.8rem);
+            font-size: clamp(1.1rem, 2vw, 1.6rem);
             color: var(--accent);
             margin: 15px 0;
+            line-height: 1.6;
         }
 
         h4 {
             font-family: 'Inter', sans-serif;
-            font-size: clamp(0.7rem, 1vw, 0.9rem);
+            font-size: clamp(0.7rem, 1vw, 0.85rem);
             font-weight: 300;
             text-transform: uppercase;
-            letter-spacing: 5px;
+            letter-spacing: 6px;
             opacity: 0.5;
         }
 
         .social-center {
-            margin-top: 25px;
+            margin-top: 30px;
             display: flex;
-            justify-content: center; /* Centered as requested */
-            gap: 30px;
+            justify-content: center;
+            gap: 40px;
             pointer-events: auto;
         }
 
         .social-center a {
             color: var(--text);
-            font-size: 1.3rem;
-            transition: 0.3s;
-            opacity: 0.4;
+            font-size: 1.4rem;
+            transition: 0.4s;
+            opacity: 0.3;
         }
 
         .social-center a:hover {
             opacity: 1;
             color: var(--accent);
-            transform: translateY(-3px);
+            transform: scale(1.2);
         }
 
         .controls {
             position: fixed;
-            bottom: 40px;
+            bottom: 50px;
             display: flex;
-            gap: 15px;
+            gap: 20px;
             z-index: 100;
             pointer-events: auto;
         }
 
         button {
             background: transparent;
-            border: 1px solid rgba(255,255,255,0.3);
+            border: 1px solid rgba(255,255,255,0.2);
             color: var(--text);
-            padding: 12px 28px;
+            padding: 14px 32px;
             font-family: 'Space Mono', monospace;
             font-size: 10px;
             text-transform: uppercase;
             letter-spacing: 2px;
             cursor: pointer;
-            border-radius: 50px; /* Round buttons */
-            transition: 0.4s;
+            border-radius: 50px;
+            transition: 0.5s;
         }
 
         button:hover {
@@ -133,21 +134,21 @@
 
         #mode-tag {
             position: fixed;
-            top: 40px;
+            top: 50px;
             font-family: 'Space Mono', monospace;
-            font-size: 10px;
-            letter-spacing: 3px;
-            opacity: 0.3;
+            font-size: 9px;
+            letter-spacing: 4px;
+            opacity: 0.4;
         }
     </style>
 </head>
 <body onclick="morphObject()">
 
-    <div id="mode-tag">PARISTHITI: <span id="form-name">SPHERE</span></div>
+    <div id="mode-tag">FORM: <span id="form-name">HALO</span></div>
     <div id="canvas-container"></div>
 
     <div class="interface">
-        <h2>kailash</h2>
+        <h2 id="main-title">Kailash</h2>
 
         <div class="quote-block" id="q-engine">
             <h3 id="hi">नैनं छिन्दन्ति शस्त्राणि नैनं दहति पावकः।</h3>
@@ -169,28 +170,34 @@
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script>
-        const quotes = [
+        const gitaQuotes = [
             {h: "कर्मण्येवाधिकारस्ते मा फलेषु कदाचन।", e: "Your right is to work only, never to its fruits."},
             {h: "यदा यदा हि धर्मस्य ग्लानिर्भवति भारत।", e: "Whenever righteousness declines, I manifest."},
             {h: "कालोऽस्मि लोकक्षयकृत्प्रवृद्धो।", e: "I am Time, the destroyer of worlds."},
-            {h: "मनो दुर्निग्रहं चलं अभ्यासेन तु गृह्यते।", e: "The mind is restless, but practice can tame it."}
+            {h: "मनो दुर्निग्रहं चलं अभ्यासेन तु गृह्यते।", e: "The mind is restless, but practice can tame it."},
+            {h: "ध्यायतो विषयान्पुंसः सङ्गस्तेषूपजायते।", e: "Attachment to objects comes from thinking about them."},
+            {h: "योगस्थः कुरु कर्माणि सङ्गं त्यक्त्वा धनञ्जय।", e: "Be steadfast in yoga, O Arjuna. Abandon attachment."},
+            {h: "अजोऽपि सन्नव्ययात्मा भूतानामीश्वरोऽपि सन्।", e: "Though unborn and eternal, I appear by my own will."}
         ];
 
-        const fonts = ['Poppins', 'Montserrat', 'Inter', 'Space Mono', 'Outfit'];
+        const fonts = ['Poppins', 'Montserrat', 'Playfair Display', 'Fraunces', 'Cormorant Garamond', 'Cinzel', 'Outfit', 'Inter', 'Space Mono'];
+
         const themes = [
-            {bg: '#000000', text: '#ffffff', acc: '#d4af37'},
-            {bg: '#ffffff', text: '#000000', acc: '#0071e3'},
-            {bg: '#050505', text: '#ffffff', acc: '#ffffff'}
+            {bg: '#000000', text: '#ffffff', acc: '#d4af37'}, // Deep Black
+            {bg: '#0a0e14', text: '#e0e0e0', acc: '#00d4ff'}, // Cyber Blue
+            {bg: '#0f0505', text: '#ffcccc', acc: '#ff4d4d'}, // Ruby Rose
+            {bg: '#050f0a', text: '#ccffdd', acc: '#00ff88'}, // Emerald
+            {bg: '#0a0510', text: '#e0ccff', acc: '#b366ff'}  // Royal Purple
         ];
 
         let scene, camera, renderer, particles, targetPositions;
         let tIdx = 0, fIdx = 0, qIdx = 0, mIdx = 0;
-        const count = 15000;
+        const count = 18000;
 
         function init() {
             scene = new THREE.Scene();
             camera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight, 0.1, 1000);
-            camera.position.z = 2.5; // Zoomed in
+            camera.position.z = 2.2; 
 
             renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
             renderer.setSize(window.innerWidth, window.innerHeight);
@@ -206,55 +213,61 @@
             }
 
             geo.setAttribute('position', new THREE.BufferAttribute(positions, 3));
-            const mat = new THREE.PointsMaterial({ size: 0.008, color: 0xffffff, transparent: true, opacity: 0.7 });
+            const mat = new THREE.PointsMaterial({ size: 0.007, color: 0xffffff, transparent: true, opacity: 0.8 });
             particles = new THREE.Points(geo, mat);
             scene.add(particles);
 
-            generateShape(0); // Start with Sphere
+            generateShape(0); 
             animate();
             document.getElementById('q-engine').classList.add('active');
         }
 
         function generateShape(type) {
-            const names = ['SPHERE', 'TORUS', 'CUBE', 'HELIX', 'INFINITY', 'PYRAMID', 'CYLINDER', 'PLANE', 'VORTEX', 'STAR'];
-            document.getElementById('form-name').innerText = names[type];
+            const names = ['HALO', 'STRING', 'GALAXY', 'DNA', 'PILLAR', 'ORBIT', 'WEB', 'VOID'];
+            document.getElementById('form-name').innerText = names[type] || 'MYSTERY';
 
             for (let i = 0; i < count; i++) {
                 const i3 = i * 3;
                 let x, y, z;
 
-                if (type === 0) { // Sphere
-                    const u = Math.random(), v = Math.random();
-                    const theta = 2 * Math.PI * u, phi = Math.acos(2 * v - 1);
-                    x = Math.sin(phi) * Math.cos(theta);
-                    y = Math.sin(phi) * Math.sin(theta);
-                    z = Math.cos(phi);
-                } else if (type === 1) { // Torus
-                    const u = Math.random() * 2 * Math.PI, v = Math.random() * 2 * Math.PI;
-                    x = (1.5 + 0.5 * Math.cos(v)) * Math.cos(u);
-                    y = (1.5 + 0.5 * Math.cos(v)) * Math.sin(u);
-                    z = 0.5 * Math.sin(v);
-                } else if (type === 2) { // Cube
-                    x = (Math.random() - 0.5) * 2;
-                    y = (Math.random() - 0.5) * 2;
-                    z = (Math.random() - 0.5) * 2;
-                } else if (type === 3) { // Helix
-                    const t = (i / count) * 20;
-                    x = Math.cos(t); y = Math.sin(t); z = t * 0.2 - 2;
-                } else { // Chaos/Vortex
-                    x = (Math.random() - 0.5) * 5;
-                    y = (Math.random() - 0.5) * 5;
-                    z = (Math.random() - 0.5) * 5;
+                if (type === 0) { // The Halo (Hollow Ring framing text)
+                    const angle = Math.random() * Math.PI * 2;
+                    const radius = 1.8 + (Math.random() * 0.05); // Sharp boundary
+                    x = Math.cos(angle) * radius;
+                    y = Math.sin(angle) * radius;
+                    z = (Math.random() - 0.5) * 0.1;
+                } else if (type === 1) { // String Theory (Complex Line)
+                    const t = (i / count) * Math.PI * 10;
+                    x = Math.cos(t) * 1.5;
+                    y = Math.sin(t * 0.5) * 1.0;
+                    z = Math.sin(t * 2.0) * 0.5;
+                } else if (type === 2) { // Galaxy
+                    const angle = 0.1 * i;
+                    const r = 0.001 * i;
+                    x = r * Math.cos(angle);
+                    y = r * Math.sin(angle);
+                    z = (Math.random() - 0.5) * 0.5;
+                } else if (type === 3) { // DNA
+                    const t = (i / count) * Math.PI * 4;
+                    const side = i % 2 === 0 ? 1 : -1;
+                    x = Math.cos(t) * side;
+                    y = t - 6;
+                    z = Math.sin(t) * side;
+                    y *= 0.3;
+                } else { // Default Chaos
+                    x = (Math.random() - 0.5) * 4;
+                    y = (Math.random() - 0.5) * 4;
+                    z = (Math.random() - 0.5) * 4;
                 }
 
-                targetPositions[i3] = x * 1.5;
-                targetPositions[i3+1] = y * 1.5;
-                targetPositions[i3+2] = z * 1.5;
+                targetPositions[i3] = x;
+                targetPositions[i3+1] = y;
+                targetPositions[i3+2] = z;
             }
         }
 
         function morphObject() {
-            mIdx = (mIdx + 1) % 10;
+            mIdx = (mIdx + 1) % 5;
             generateShape(mIdx);
         }
 
@@ -264,12 +277,13 @@
             document.body.style.backgroundColor = t.bg;
             document.body.style.color = t.text;
             document.documentElement.style.setProperty('--accent', t.acc);
-            particles.material.color.set(t.text);
+            particles.material.color.set(t.acc);
         }
 
         function nextFont() {
             fIdx = (fIdx + 1) % fonts.length;
             document.documentElement.style.setProperty('--font-main', fonts[fIdx]);
+            document.getElementById('main-title').style.fontFamily = fonts[fIdx];
         }
 
         function animate() {
@@ -277,12 +291,12 @@
             const pos = particles.geometry.attributes.position.array;
 
             for(let i=0; i<count*3; i++) {
-                // Smooth Lerp to target
-                pos[i] += (targetPositions[i] - pos[i]) * 0.05;
+                // Slower, smoother lerp (0.02 instead of 0.05)
+                pos[i] += (targetPositions[i] - pos[i]) * 0.02;
             }
 
             particles.geometry.attributes.position.needsUpdate = true;
-            particles.rotation.y += 0.002;
+            particles.rotation.y += 0.0015;
             renderer.render(scene, camera);
         }
 
@@ -291,12 +305,12 @@
             const wrap = document.getElementById('q-engine');
             wrap.classList.remove('active');
             setTimeout(() => {
-                qIdx = (qIdx + 1) % quotes.length;
-                document.getElementById('hi').innerText = quotes[qIdx].h;
-                document.getElementById('en').innerText = quotes[qIdx].e;
+                qIdx = (qIdx + 1) % gitaQuotes.length;
+                document.getElementById('hi').innerText = gitaQuotes[qIdx].h;
+                document.getElementById('en').innerText = gitaQuotes[qIdx].e;
                 wrap.classList.add('active');
-            }, 1000);
-        }, 8000);
+            }, 1200);
+        }, 9000);
 
         window.addEventListener('resize', () => {
             camera.aspect = window.innerWidth / window.innerHeight;
