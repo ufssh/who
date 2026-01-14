@@ -1,84 +1,105 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="hi">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>KAILASH | ARCHITECT</title>
-    <!-- Loading 20 Diverse Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@800&family=Inter:wght@900&family=Space+Mono&family=Bungee&family=Playfair+Display:ital,wght@1,900&family=Unbounded:wght@900&family=Orbitron:wght@900&family=Rubik+Glitch&family=Climate+Crisis&family=Barlow+Condensed:wght@900&family=Fraunces:ital,opsz,wght@1,9..144,900&family=JetBrains+Mono:wght@800&family=Silkscreen&family=Archivo+Black&family=Righteous&family=Abril+Fatface&family=DotGothic16&family=Russo+One&family=Major+Mono+Display&family=Press+Start+2P&display=swap" rel="stylesheet">
+    <title>KAILASH | अनन्त </title>
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@800&family=Inter:wght@900&family=Space+Mono&family=Bungee&family=Playfair+Display:ital,wght@1,900&family=Unbounded:wght@900&family=Orbitron:wght@900&family=Rubik+Glitch&family=Climate+Crisis&family=Barlow+Condensed:wght@900&family=Fraunces:ital,opsz,wght@1,9..144,900&family=JetBrains+Mono:wght@800&family=Silkscreen&family=Archivo+Black&family=Righteous&family=Abril+Fatface&family=DotGothic16&family=Russo+One&family=Major+Mono+Display&family=Press+Start+2P&family=Noto+Serif+Devanagari:wght@900&display=swap" rel="stylesheet">
 
     <style>
         :root {
-            --accent: #fff;
+            --accent: #FFD700;
             --bg: #000;
-            --font-active: 'Syne', sans-serif;
+            --font-main: 'Syne', sans-serif;
         }
 
         body, html {
-            margin: 0;
-            padding: 0;
-            width: 100vw;
-            height: 100vh;
+            margin: 0; padding: 0;
+            width: 100%; height: 100%;
             overflow: hidden;
             background: #000;
             color: var(--accent);
-            font-family: var(--font-active);
-            transition: color 0.5s ease;
+            font-family: var(--font-main);
+            transition: all 0.8s cubic-bezier(0.2, 0, 0.2, 1);
         }
 
         canvas {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
+            position: fixed; top: 0; left: 0;
+            width: 100%; height: 100%;
             z-index: 1;
         }
 
-        .ui-overlay {
+        .viewport {
             position: relative;
             z-index: 10;
-            height: 100%;
+            height: 100vh;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
             pointer-events: none;
+            text-align: center;
             mix-blend-mode: difference;
         }
 
         h1 {
-            font-size: clamp(4rem, 18vw, 15rem);
+            font-size: clamp(5rem, 20vw, 18rem);
             margin: 0;
             text-transform: uppercase;
-            letter-spacing: -0.02em;
-            line-height: 0.8;
-            text-align: center;
+            line-height: 0.7;
+            letter-spacing: -0.05em;
+        }
+
+        .gita-container {
+            margin-top: 40px;
+            max-width: 800px;
+            padding: 20px;
+        }
+
+        .hindi {
+            font-family: 'Noto Serif Devanagari', serif;
+            font-size: 1.8rem;
+            display: block;
+            margin-bottom: 10px;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: 1s;
+        }
+
+        .english {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            opacity: 0;
+            transition: 1.5s;
+        }
+
+        .active-quote .hindi, .active-quote .english {
+            opacity: 1;
+            transform: translateY(0);
         }
 
         .controls {
             position: fixed;
             bottom: 40px;
-            left: 50%;
-            transform: translateX(-50%);
             display: flex;
-            gap: 20px;
-            pointer-events: auto;
+            gap: 15px;
             z-index: 100;
+            pointer-events: auto;
         }
 
         button {
             background: none;
             border: 1px solid var(--accent);
             color: var(--accent);
-            padding: 12px 24px;
-            font-family: 'Space Mono', monospace;
+            padding: 10px 20px;
             font-size: 10px;
             text-transform: uppercase;
             letter-spacing: 2px;
             cursor: pointer;
+            backdrop-filter: blur(10px);
             transition: 0.3s;
-            backdrop-filter: blur(5px);
         }
 
         button:hover {
@@ -86,133 +107,156 @@
             color: #000;
         }
 
-        .meta {
+        .nav-links {
             position: fixed;
             top: 40px;
-            left: 40px;
-            font-family: 'Space Mono', monospace;
+            right: 40px;
+            display: flex;
+            gap: 20px;
+            z-index: 100;
+            pointer-events: auto;
+        }
+
+        .nav-links a {
+            color: var(--accent);
+            text-decoration: none;
             font-size: 10px;
             letter-spacing: 2px;
-            opacity: 0.6;
         }
     </style>
 </head>
 <body>
 
-    <canvas id="gl-canvas"></canvas>
+    <canvas id="eternity-canvas"></canvas>
 
-    <div class="meta">SYSTEM_STATUS: UN-THOUGHTABLE // DIMENSION: <span id="dim-label">01</span></div>
-
-    <div class="ui-overlay">
+    <div class="viewport">
         <h1 id="main-title">KAILASH</h1>
+        <div class="gita-container active-quote" id="quote-box">
+            <span class="hindi" id="hi-text">कर्मण्येवाधिकारस्ते मा फलेषु कदाचन।</span>
+            <span class="english" id="en-text">You have a right to perform your prescribed duties, but you are not entitled to the fruits of your actions.</span>
+        </div>
+
+        <div class="controls">
+            <button onclick="cycleTheme()">Phase</button>
+            <button onclick="cycleLoop()">Maya</button>
+            <button onclick="cycleFont()">Akshara</button>
+        </div>
     </div>
 
-    <div class="controls">
-        <button onclick="nextDimension()">Change Dimension</button>
-        <button onclick="nextFont()">Switch Typeface</button>
+    <div class="nav-links">
+        <a href="https://github.com/ufssh">GITHUB</a>
+        <a href="https://AgainOwner.t.me">TELEGRAM</a>
     </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 
-    <!-- SHADER CORE -->
     <script id="fragmentShader" type="x-shader/x-fragment">
         uniform float u_time;
         uniform vec2 u_resolution;
-        uniform vec2 u_mouse;
         uniform int u_mode;
+        uniform vec3 u_color;
 
         void main() {
             vec2 uv = gl_FragCoord.xy / u_resolution.xy;
+            uv = uv * 2.0 - 1.0;
             uv.x *= u_resolution.x / u_resolution.y;
 
-            vec3 color = vec3(0.0);
             float d = 0.0;
-
-            if(u_mode == 0) { // DIMENSION: FLUID
-                d = length(uv - 0.5 + sin(u_time * 0.5) * 0.2);
-                color = vec3(0.1, 0.2, 0.5) / d;
-            } 
-            else if(u_mode == 1) { // DIMENSION: GRID
-                vec2 grid = fract(uv * 10.0 + u_time * 0.2);
-                color = vec3(grid.x, 0.5, grid.y) * 0.5;
-            }
-            else if(u_mode == 2) { // DIMENSION: CHAOS
-                float n = fract(sin(dot(uv, vec2(12.9898, 78.233))) * 43758.5453);
-                color = vec3(n * sin(u_time), n * cos(u_time), 0.2);
-            }
-            else { // DIMENSION: VOID
-                float m = length(uv - u_mouse/u_resolution);
-                color = vec3(1.0 - smoothstep(0.0, 0.8, m));
+            if(u_mode == 0) { // FRACTAL DHARMA
+                for(float i=0.0; i<3.0; i++) {
+                    uv = abs(uv) - 0.5;
+                    float angle = u_time * 0.2;
+                    uv *= mat2(cos(angle), -sin(angle), sin(angle), cos(angle));
+                    d += 0.01 / length(uv);
+                }
+            } else if(u_mode == 1) { // COSMIC FLOW
+                d = sin(uv.x * 10.0 + u_time) * sin(uv.y * 10.0 + u_time);
+                d = smoothstep(0.1, 0.9, d);
+            } else { // THE VOID
+                d = length(uv) * sin(u_time * 0.5);
+                d = 0.05 / d;
             }
 
-            gl_FragColor = vec4(color * 0.3, 1.0);
+            gl_FragColor = vec4(u_color * d, 1.0);
         }
     </script>
 
     <script>
-        const fonts = [
-            'Syne', 'Inter', 'Space Mono', 'Bungee', 'Playfair Display', 
-            'Unbounded', 'Orbitron', 'Rubik Glitch', 'Climate Crisis', 
-            'Barlow Condensed', 'Fraunces', 'JetBrains Mono', 'Silkscreen', 
-            'Archivo Black', 'Righteous', 'Abril Fatface', 'DotGothic16', 
-            'Russo One', 'Major Mono Display', 'Press+Start+2P'
+        const gitaQuotes = [
+            {hi: "नैनं छिन्दन्ति शस्त्राणि नैनं दहति पावकः।", en: "Weapons cannot shred the soul, nor can fire burn it."},
+            {hi: "यदा यदा हि धर्मस्य ग्लानिर्भवति भारत।", en: "Whenever there is a decline in righteousness, I manifest myself."},
+            {hi: "मृत्युः सर्वहरश्चाहमुद्भवश्च भविष्यताम्।", en: "I am all-devouring Death, and I am the origin of those yet to be born."},
+            {hi: "योगस्थः कुरु कर्माणि सङ्गं त्यक्त्वा धनञ्जय।", en: "Be steadfast in yoga, O Arjuna. Perform your duty and abandon all attachment to success or failure."},
+            {hi: "अजोऽपि सन्नव्ययात्मा भूतानामीश्वरोऽपि सन्।", en: "Though I am unborn and My transcendental body never deteriorates, I still appear in every millennium."},
+            {hi: "कालोऽस्मि लोकक्षयकृत्प्रवृद्धो।", en: "I am Time, the great destroyer of worlds."}
         ];
 
-        let currentFont = 0;
-        let currentDim = 0;
+        const fonts = ['Syne', 'Inter', 'Bungee', 'Orbitron', 'Unbounded', 'Rubik Glitch', 'Climate Crisis', 'Silkscreen', 'Righteous', 'Major Mono Display', 'Press Start 2P', 'Fraunces', 'Abril Fatface', 'DotGothic16', 'Russo One', 'JetBrains Mono', 'Archivo Black', 'Barlow Condensed', 'Playfair Display', 'Space Mono'];
 
-        // Three.js Setup
+        let fIdx = 0, tIdx = 0, lIdx = 0, qIdx = 0;
+        const themes = [[1, 0.84, 0], [0.5, 0, 1], [1, 1, 1], [1, 0.2, 0]]; // Gold, Purple, White, Red
+
+        // Three.js Logic
         const scene = new THREE.Scene();
         const camera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 1);
-        const renderer = new THREE.WebGLRenderer({ canvas: document.getElementById('gl-canvas') });
+        const renderer = new THREE.WebGLRenderer({ canvas: document.getElementById('eternity-canvas') });
         renderer.setSize(window.innerWidth, window.innerHeight);
 
         const uniforms = {
             u_time: { value: 0 },
             u_resolution: { value: new THREE.Vector2(window.innerWidth, window.innerHeight) },
-            u_mouse: { value: new THREE.Vector2(0, 0) },
-            u_mode: { value: 0 }
+            u_mode: { value: 0 },
+            u_color: { value: new THREE.Color(1, 0.84, 0) }
         };
 
-        const geometry = new THREE.PlaneGeometry(2, 2);
         const material = new THREE.ShaderMaterial({
             uniforms: uniforms,
             fragmentShader: document.getElementById('fragmentShader').textContent
         });
+        scene.add(new THREE.Mesh(new THREE.PlaneGeometry(2, 2), material));
 
-        const mesh = new THREE.Mesh(geometry, material);
-        scene.add(mesh);
-
-        function nextFont() {
-            currentFont = (currentFont + 1) % fonts.length;
-            const fontName = fonts[currentFont].replace(/\+/g, ' ');
-            document.body.style.setProperty('--font-active', `"${fontName}", sans-serif`);
-            document.getElementById('main-title').style.fontFamily = `"${fontName}"`;
+        // Control Functions
+        function cycleFont() {
+            fIdx = (fIdx + 1) % fonts.length;
+            document.body.style.setProperty('--font-main', fonts[fIdx]);
+            document.getElementById('main-title').style.fontFamily = fonts[fIdx];
         }
 
-        function nextDimension() {
-            currentDim = (currentDim + 1) % 4;
-            uniforms.u_mode.value = currentDim;
-            document.getElementById('dim-label').innerText = "0" + (currentDim + 1);
+        function cycleTheme() {
+            tIdx = (tIdx + 1) % themes.length;
+            const c = themes[tIdx];
+            uniforms.u_color.value.setRGB(c[0], c[1], c[2]);
+            document.documentElement.style.setProperty('--accent', `rgb(${c[0]*255},${c[1]*255},${c[2]*255})`);
         }
 
-        window.addEventListener('mousemove', (e) => {
-            uniforms.u_mouse.value.x = e.clientX;
-            uniforms.u_mouse.value.y = window.innerHeight - e.clientY;
-        });
+        function cycleLoop() {
+            lIdx = (lIdx + 1) % 3;
+            uniforms.u_mode.value = lIdx;
+        }
 
-        function animate(time) {
-            uniforms.u_time.value = time * 0.001;
+        // Quote Loop
+        setInterval(() => {
+            const box = document.getElementById('quote-box');
+            box.classList.remove('active-quote');
+            setTimeout(() => {
+                qIdx = (qIdx + 1) % gitaQuotes.length;
+                document.getElementById('hi-text').innerText = gitaQuotes[qIdx].hi;
+                document.getElementById('en-text').innerText = gitaQuotes[qIdx].en;
+                box.classList.add('active-quote');
+            }, 1000);
+        }, 6000);
+
+        function animate(t) {
+            uniforms.u_time.value = t * 0.001;
             renderer.render(scene, camera);
             requestAnimationFrame(animate);
         }
+        requestAnimationFrame(animate);
 
         window.addEventListener('resize', () => {
             renderer.setSize(window.innerWidth, window.innerHeight);
             uniforms.u_resolution.value.set(window.innerWidth, window.innerHeight);
         });
-
-        requestAnimationFrame(animate);
     </script>
 </body>
 </html>
